@@ -1,36 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Leaflet WMS with Bounding Box</title>
+    <title>Leaflet WMS with Bounding Box - Client</title>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <style>
-        body {
-            margin: 0;
-            border: 0;
-        }
-        #map {
-            height: 85vh;
-            width: 100%;
-            background-color: black;
-        }
-        #controls {
-            height: 15vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #f4f4f4;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            margin: 5px;
-        }
-        .video-controls-btn {
-            border-radius: 15px;
-        }
-    </style>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
 </head>
 <body>
@@ -42,16 +16,21 @@
         <div id="interpolation-timestamp-selection-div">
             <select name="interpolation-timestamp-selection" id="interpolation-timestamp-selection"></select>
         </div>
+        <div id="areas">
+            <button id="select-area">Select Area</button>
+            <button id="clear-area">Clear Area</button>
+        </div>
+            <div id="video-controls">
+                <button class="video-controls-btn" id="prev-frame">Previous Frame</button>
+                <button class="video-controls-btn" id="pause">Pause</button>
+                <button class="video-controls-btn" id="next-frame">Next Frame</button>
+        </div>
+    </div>
+    <div id="range">
         <label for="squareSizeInput">Area Size:</label>
         <input type="range" id="squareSizeInput" min="8" max="30" value="12">
-        <button id="select-area">Select Area</button>
-        <button id="clear-area">Clear Area</button>
-        <div id="video-controls">
-            <button class="video-controls-btn" id="prev-frame">Previous Frame</button>
-            <button class="video-controls-btn" id="pause">Pause</button>
-            <button class="video-controls-btn" id="next-frame">Next Frame</button>
-          </div>
     </div>
+
     <script src="main.js"></script>
     <script>
         const R = 6378137; // earth radius
@@ -214,17 +193,6 @@
 
                     console.log(data);
 
-                    // console.log([bottomLeftBBox.x,  bottomLeftBBox.y, topRightBBox.x,topRightBBox.y].join("%2C"))
-
-                    // let resp = await fetch(url, {
-                    //     method: 'POST',
-                    //     headers: {
-                    //         'Content-Type': 'application/json' // Tell the server you're sending JSON
-                    //     },
-                    //     body: JSON.stringify(data) // Convert your data object to a JSON string
-                    // });
-                    // let respJson = await resp.json();
-
                     let url1 = `https://cors-anywhere.herokuapp.com/https://www.mosdac.gov.in/live_data/wms/live3RL1BSTD1km/products/Insat3r/3R_IMG/2024/10DEC/3RIMG_10DEC2024_${intermediateTimestamps[0]}_L1B_STD_V01R00.h5?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image%2Fpng&TRANSPARENT=true&LAYERS=IMG_VIS&COLORSCALERANGE=21%2C355&BELOWMINCOLOR=extend&ABOVEMAXCOLOR=extend&transparent=true&format=image%2Fpng&STYLES=boxfill%2Fgreyscale&WIDTH=256&HEIGHT=256&CRS=EPSG%3A3857&BBOX=${bbox}`;
                     let url2 = `https://cors-anywhere.herokuapp.com/https://www.mosdac.gov.in/live_data/wms/live3RL1BSTD1km/products/Insat3r/3R_IMG/2024/10DEC/3RIMG_10DEC2024_${intermediateTimestamps[1]}_L1B_STD_V01R00.h5?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image%2Fpng&TRANSPARENT=true&LAYERS=IMG_VIS&COLORSCALERANGE=21%2C355&BELOWMINCOLOR=extend&ABOVEMAXCOLOR=extend&transparent=true&format=image%2Fpng&STYLES=boxfill%2Fgreyscale&WIDTH=256&HEIGHT=256&CRS=EPSG%3A3857&BBOX=${bbox}`;
                     let videoUrl = await tensorToVideo(url1, url2);
@@ -233,8 +201,6 @@
                     console.log(url2);
                     console.log(videoUrl);
 
-                    // const videoUrl = `https://literate-disco-9pwjjqv9q6p37wgr-5000.app.github.dev/static/${uniqueId}.mp4`; // Example video URL
-                    // const videoUrl = 'https://www.w3schools.com/html/mov_bbb.mp4'; // Example video URL
                     const videoBounds = [[bottomLeft.lat, bottomLeft.lng], [topRight.lat, topRight.lng]]; // SouthWest and NorthEast corners
 
                     clearSelectedArea();
@@ -251,7 +217,6 @@
                 });
             });
         });
-
 
         function clearSelectedArea() {
             if (rectangle != null) {
@@ -270,7 +235,6 @@
         clearAreaButton.addEventListener('click', () => {
             clearSelectedArea();
         });
-
     </script>
 </body>
 </html>
