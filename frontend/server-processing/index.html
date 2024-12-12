@@ -120,8 +120,10 @@
                 if (videoElement) {
                     if (videoElement.paused) {
                         videoElement.play();
+                        pauseControlBtn.innerHTML = "Pause";
                     } else {
                         videoElement.pause();
+                        pauseControlBtn.innerHTML = "Play";
                     }
                 }
             };
@@ -129,6 +131,7 @@
             nextFrameControlBtn.onclick = () => {
                 if (videoElement) {
                     videoElement.pause(); // make the video paused
+                    pauseControlBtn.innerHTML = "Play";
                     videoElement.currentTime += frameDuration; // next frame
                 }
             };
@@ -136,6 +139,7 @@
             document.getElementById('prev-frame').onclick = () => {
                 if (videoElement) {
                     videoElement.pause();
+                    pauseControlBtn.innerHTML = "Play";
                     videoElement.currentTime = Math.max(0, videoElement.currentTime - frameDuration);
                 }
             };
