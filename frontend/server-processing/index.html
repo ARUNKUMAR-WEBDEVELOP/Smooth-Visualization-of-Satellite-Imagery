@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
 </head>
 <body>
     <div id="map"></div>
@@ -19,10 +20,16 @@
             <button id="select-area">Select Area</button>
             <button id="clear-area">Clear Area</button>
         </div>
-            <div id="video-controls">
-                <button class="video-controls-btn" id="prev-frame">Previous Frame</button>
-                <button class="video-controls-btn" id="pause">Pause</button>
-                <button class="video-controls-btn" id="next-frame">Next Frame</button>
+        <div id="video-controls">
+            <button class="video-controls-btn" id="prev-frame">
+                <box-icon name='skip-previous-circle'></box-icon>
+            </button>
+            <button class="video-controls-btn" id="pause">
+                <box-icon name='pause-circle'></box-icon>
+            </button>
+            <button class="video-controls-btn" id="next-frame">
+                <box-icon name='skip-next-circle' ></box-icon>
+            </button>
         </div>
     </div>
     <div id="range">
@@ -120,10 +127,10 @@
                 if (videoElement) {
                     if (videoElement.paused) {
                         videoElement.play();
-                        pauseControlBtn.innerHTML = "Pause";
+                        pauseControlBtn.innerHTML = `<box-icon name='pause-circle'></box-icon>`;
                     } else {
                         videoElement.pause();
-                        pauseControlBtn.innerHTML = "Play";
+                        pauseControlBtn.innerHTML = `<box-icon name='play-circle' ></box-icon>`;
                     }
                 }
             };
@@ -131,7 +138,7 @@
             nextFrameControlBtn.onclick = () => {
                 if (videoElement) {
                     videoElement.pause(); // make the video paused
-                    pauseControlBtn.innerHTML = "Play";
+                    pauseControlBtn.innerHTML = `<box-icon name='play-circle' ></box-icon>`;
                     videoElement.currentTime += frameDuration; // next frame
                 }
             };
@@ -139,7 +146,7 @@
             document.getElementById('prev-frame').onclick = () => {
                 if (videoElement) {
                     videoElement.pause();
-                    pauseControlBtn.innerHTML = "Play";
+                    pauseControlBtn.innerHTML = `<box-icon name='play-circle' ></box-icon>`;
                     videoElement.currentTime = Math.max(0, videoElement.currentTime - frameDuration);
                 }
             };
